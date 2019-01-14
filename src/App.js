@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Messages from './component/Messages';
+import Toolbar from './component/Toolbar';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
+import 'font-awesome/css/font-awesome.css';
 import './App.css';
 
 class App extends Component {
+  componentDidMount = async() => {
+    const response = await fetch('http://localhost:8082/api/messages')
+    const messages = await response.json()
+    const newState = {messages:[...messages]}
+    this.setState(newState)
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="container">
+        <Toolbar/>
+        <Messages messages={this.state? this.state.messages :""}/>
       </div>
     );
   }
