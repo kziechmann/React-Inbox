@@ -28,11 +28,22 @@ class App extends Component {
     })
   }
 
-  checked = (e) => {
+  select = (e) => {
     let newMessages = [...this.state.messages]
     newMessages[e.target.id-1]['selected'] = e.target.checked
     this.setState({messages: newMessages})
+  }
 
+  selectAll = (e) => {
+    let newMessages = [...this.state.messages]
+    newMessages.forEach(message => message['selected'] = true)
+    this.setState({messages: newMessages})
+  }
+
+  unSelectAll = (e) => {
+    let newMessages = [...this.state.messages]
+    newMessages.forEach(message => message['selected'] = false)
+    this.setState({messages: newMessages})
   }
 
   starred = async(e) => {
@@ -97,6 +108,13 @@ class App extends Component {
                        })
   }
 
+  anyChecked = () =>{
+    return this.state.messages? this.state.messages.filter(message => message.selected).length>0? true : false : false
+  }
+
+  allChecked = () =>{
+    return this.state.messages? this.state.messages.filter(message => message.selected).length == this.state.messages.length? true : false : false
+  }
 
 
   render() {
@@ -104,8 +122,8 @@ class App extends Component {
       <div>
       <nav></nav>
       <div className="container" style={{background: "rgba(200, 200, 200, 0.8)"}}>
-        <Toolbar messages={this.state.messages} unReadAll={this.unReadSelected} readAll={this.readSelected}/>
-        <Messages messages={this.state.messages} checked={this.checked} read={this.read} starred={this.starred}/>
+        <Toolbar messages={this.state.messages} unReadAll={this.unReadSelected} readAll={this.readSelected} anyChecked={this.anyChecked} allChecked={this.allChecked} selectAll={this.selectAll} unSelectAll={this.unSelectAll}/>
+        <Messages messages={this.state.messages} select={this.select} read={this.read} starred={this.starred}/>
       </div>
       </div>
     );
