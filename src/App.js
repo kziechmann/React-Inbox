@@ -12,26 +12,49 @@ class App extends Component {
   componentDidMount = async() => {
     const response = await fetch('http://localhost:8082/api/messages')
     const messages = await response.json()
-    const newState = {messages:[...messages]}
+    let newState = {messages:[...messages]}
+    newState.messages.forEach(message => {newState.messages[message.id-1]['selected'] = false})
     this.setState(newState)
+  }
+
+  updateMessage = async(data) => {
+    await fetch('http://localhost:8082/api/messages',{
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
   }
 
   checked = (e) => {
     let newMessages = [...this.state.messages]
     newMessages[e.target.id-1]['selected'] = e.target.checked
     this.setState({messages: newMessages})
+
   }
 
-  starred = (e) => {
+  starred = async(e) => {
     let newMessages = [...this.state.messages]
     let isStarred = newMessages[e.target.id-1]['starred'] || false
     isStarred? newMessages[e.target.id-1]['starred'] = false : newMessages[e.target.id-1]['starred'] = true
+    await this.updateMessage({
+      messageIds: [e.target.id],
+      command: 'star',
+      star: !isStarred
+    })
     this.setState({messages: newMessages})
   }
 
-  read = (e) => {
+  read = async(e) => {
     let newMessages = [...this.state.messages]
     newMessages[e.target.id-1]['read'] = true
+    await this.updateMessage({
+      messageIds: [e.target.id],
+      command: 'read',
+      read: newMessages[e.target.id-1]['read']
+    })
     this.setState({messages: newMessages})
   }
 
