@@ -58,12 +58,53 @@ class App extends Component {
     this.setState({messages: newMessages})
   }
 
+  unRead = async(e) => {
+    let newMessages = [...this.state.messages]
+    newMessages[e.target.id-1]['read'] = false
+    await this.updateMessage({
+      messageIds: [e.target.id],
+      command: 'read',
+      read: newMessages[e.target.id-1]['read']
+    })
+    this.setState({messages: newMessages})
+  }
+
+  readSelected = () =>{
+    this.state.messages.filter(message=> message.selected)
+                       .forEach(async message=>{
+                         let newMessages = [...this.state.messages]
+                         newMessages[message.id-1]['read'] = true
+                         await this.updateMessage({
+                           messageIds: [message.id-1],
+                           command: 'read',
+                           read: newMessages[message.id-1]['read']
+                         })
+                         this.setState({messages: newMessages})
+                       })
+  }
+
+  unReadSelected = () =>{
+    this.state.messages.filter(message=> message.selected)
+                       .forEach(async message=>{
+                         let newMessages = [...this.state.messages]
+                         newMessages[message.id-1]['read'] = false
+                         await this.updateMessage({
+                           messageIds: [message.id-1],
+                           command: 'read',
+                           read: newMessages[message.id-1]['read']
+                         })
+                         this.setState({messages: newMessages})
+                       })
+  }
+
+
+
   render() {
     return (
       <div>
       <nav></nav>
       <div className="container" style={{background: "rgba(200, 200, 200, 0.8)"}}>
-        <Toolbar messages={this.state.messages}/>
+        <Toolbar messages={this.state.messages} unReadAll={this.unReadSelected} readAll={this.readSelected}/>
         <Messages messages={this.state.messages} checked={this.checked} read={this.read} starred={this.starred}/>
       </div>
       </div>

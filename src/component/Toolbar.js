@@ -14,11 +14,11 @@ class Toolbar extends Component {
             <i className="fa fa-check-square-o"></i>
           </button>
 
-          <button className="btn btn-default">
+          <button className="btn btn-default" onClick={this.props.readAll} >
             Mark As Read
           </button>
 
-          <button className="btn btn-default">
+          <button className="btn btn-default" onClick={this.props.unReadAll}>
             Mark As Unread
           </button>
 
