@@ -108,21 +108,13 @@ class App extends Component {
                        })
   }
 
-  anyChecked = () =>{
-    return this.state.messages? this.state.messages.filter(message => message.selected).length>0? true : false : false
-  }
-
-  allChecked = () =>{
-    return this.state.messages? this.state.messages.filter(message => message.selected).length == this.state.messages.length? true : false : false
-  }
-
 
   render() {
     return (
       <div>
       <nav></nav>
       <div className="container" style={{background: "rgba(200, 200, 200, 0.8)"}}>
-        <Toolbar messages={this.state.messages} unReadAll={this.unReadSelected} readAll={this.readSelected} anyChecked={this.anyChecked} allChecked={this.allChecked} selectAll={this.selectAll} unSelectAll={this.unSelectAll}/>
+        <Toolbar messages={this.state.messages} unReadAll={this.unReadSelected} readAll={this.readSelected} selectAll={this.selectAll} unSelectAll={this.unSelectAll}/>
         <Messages messages={this.state.messages} select={this.select} read={this.read} starred={this.starred}/>
       </div>
       </div>
