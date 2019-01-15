@@ -19,11 +19,11 @@
 }
 
 .message.read {
-  background: #efefef;
 }
 
 .message.unread {
   font-weight: bold;
+  background: #efefef
 }
 
 .message.selected {
@@ -32,7 +32,7 @@
 
 .message:hover {
   margin-left: -3px;
-  border-left: 3px solid #ccc;
+  border-left: 3px solid #efefef;
 }
 
 .message-body {
@@ -63,6 +63,11 @@
 
 footer.spacer {
   margin-bottom: 20em;
+}
+
+body {
+ background-image: url("./mountains.jpg");
+ background-color: #cccccc;
 }
 
 .label {
