@@ -7,13 +7,17 @@ class Toolbar extends Component {
   }
 
   allChecked = () =>{
-    return this.props.messages? this.props.messages.filter(message => message.selected).length == this.props.messages.length? true : false : false
+    return this.props.messages? this.props.messages.filter(message => message.selected).length === this.props.messages.length? true : false : false
   }
 
   render() {
     return (
       <div className="row toolbar">
         <div className="col-md-12">
+          <a class="btn btn-danger">
+            <i class="fa fa-plus"></i>
+          </a>
+
           <p className="pull-right">
             <span className="badge badge">{this.props.messages? this.props.messages.filter((message)=> !message.read).length : ''}</span>
             unread messages
@@ -32,14 +36,14 @@ class Toolbar extends Component {
             Mark As Unread
           </button>
 
-          <select className="form-control label-select" disabled={this.anyChecked()? "":"disabled"} value="Apply Label">
+          <select  onChange={this.props.applyLabel} className="form-control label-select" disabled={this.anyChecked()? "":"disabled"} value="Apply Label">
             <option>Apply label</option>
-            <option value="dev">dev</option>
+            <option value="dev" >dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
           </select>
 
-          <select className="form-control label-select" disabled={this.anyChecked()? "":"disabled"} value="Remove Label">
+          <select onChange={this.props.removeLabel} className="form-control label-select" disabled={this.anyChecked()? "":"disabled"} value="Remove Label">
             <option>Remove label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>

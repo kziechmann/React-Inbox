@@ -16,7 +16,7 @@ class Message extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" onClick={this.props.select} id={this.props.message.id} checked={this.props.message.selected}/>
+              <input type="checkbox" onChange={this.props.select} id={this.props.message.id} checked={this.props.message.selected}/>
             </div>
             <div className="col-xs-2">
               <i className={this.props.message.starred? "star fa fa-star" : "star fa fa-star-o"} onClick={this.props.starred} id={this.props.message.id}></i>
@@ -25,7 +25,7 @@ class Message extends Component {
         </div>
         <div className="col-xs-11" >
           {this.props.message.labels.includes('dev')? <span className="label label-warning">dev</span> : ""}
-          {this.props.message.labels.includes('gSchool')? <span className="label label-warning">gschool</span> : ""}
+          {this.props.message.labels.includes('gschool')? <span className="label label-warning">gschool</span> : ""}
           {this.props.message.labels.includes('personal')? <span className="label label-warning">personal</span> : ""}
           <small onClick={this.expand} id={this.props.message.id}>
             {this.props.message.subject}

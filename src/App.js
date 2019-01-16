@@ -26,6 +26,11 @@ class App extends Component {
         'Accept': 'application/json',
       }
     })
+    let response = await fetch('http://localhost:8082/api/messages')
+    const messages = await response.json()
+    let newState = {messages:[...messages]}
+    newState.messages.forEach(message => {newState.messages[message.id-1]['selected'] = this.state.messages[message.id-1]['selected']})
+    this.setState(newState)
   }
 
   select = (e) => {
@@ -55,7 +60,6 @@ class App extends Component {
       command: 'star',
       star: !isStarred
     })
-    this.setState({messages: newMessages})
   }
 
   read = async(e) => {
@@ -66,18 +70,6 @@ class App extends Component {
       command: 'read',
       read: newMessages[e.target.id-1]['read']
     })
-    this.setState({messages: newMessages})
-  }
-
-  unRead = async(e) => {
-    let newMessages = [...this.state.messages]
-    newMessages[e.target.id-1]['read'] = false
-    await this.updateMessage({
-      messageIds: [e.target.id],
-      command: 'read',
-      read: newMessages[e.target.id-1]['read']
-    })
-    this.setState({messages: newMessages})
   }
 
   readSelected = () =>{
@@ -86,26 +78,54 @@ class App extends Component {
                          let newMessages = [...this.state.messages]
                          newMessages[message.id-1]['read'] = true
                          await this.updateMessage({
-                           messageIds: [message.id-1],
+                           messageIds: [message.id],
                            command: 'read',
-                           read: newMessages[message.id-1]['read']
+                           read: true
                          })
-                         this.setState({messages: newMessages})
                        })
   }
 
   unReadSelected = () =>{
     this.state.messages.filter(message=> message.selected)
-                       .forEach(async message=>{
+                       .forEach( message=>{
                          let newMessages = [...this.state.messages]
                          newMessages[message.id-1]['read'] = false
-                         await this.updateMessage({
-                           messageIds: [message.id-1],
+                         this.updateMessage({
+                           messageIds: [message.id],
                            command: 'read',
-                           read: newMessages[message.id-1]['read']
+                           read: false
                          })
-                         this.setState({messages: newMessages})
                        })
+  }
+
+  applyLabel = (e) =>{
+      this.state.messages.filter(message=> message.selected)
+                         .forEach(async message=>{
+                           let newMessages = [...this.state.messages]
+                           let labels = newMessages[message.id-1]['labels']
+                           if (!labels.includes(e.target.value)){
+                             await this.updateMessage({
+                               messageIds: [message.id],
+                               command: 'addLabel',
+                               label: e.target.value
+                             })
+                           }
+                         })
+  }
+
+  removeLabel = (e) =>{
+      this.state.messages.filter(message=> message.selected)
+                         .forEach(async message=>{
+                           let newMessages = [...this.state.messages]
+                           let labels = newMessages[message.id-1]['labels']
+                           if (labels.includes(e.target.value)){
+                             await this.updateMessage({
+                               messageIds: [message.id],
+                               command: 'removeLabel',
+                               label: e.target.value
+                             })
+                           }
+                         })
   }
 
 
@@ -114,7 +134,7 @@ class App extends Component {
       <div>
       <nav></nav>
       <div className="container" style={{background: "rgba(200, 200, 200, 0.8)"}}>
-        <Toolbar messages={this.state.messages} unReadAll={this.unReadSelected} readAll={this.readSelected} selectAll={this.selectAll} unSelectAll={this.unSelectAll}/>
+        <Toolbar messages={this.state.messages} unReadAll={this.unReadSelected} readAll={this.readSelected} selectAll={this.selectAll} unSelectAll={this.unSelectAll} applyLabel={this.applyLabel} removeLabel={this.removeLabel}/>
         <Messages messages={this.state.messages} select={this.select} read={this.read} starred={this.starred}/>
       </div>
       </div>
