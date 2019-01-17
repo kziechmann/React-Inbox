@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 class Message extends Component {
   state = { expanded: false }
 
-  expand = (e) =>{
+  expand = (e,id) =>{
     e.preventDefault()
-    this.props.read(e)
+    this.props.read(id)
     this.setState({expanded: (this.state.expanded ? false : true)})
   }
 
@@ -16,10 +16,10 @@ class Message extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" onChange={this.props.select} id={this.props.message.id} checked={this.props.message.selected}/>
+              <input type="checkbox" onChange={(e) => this.props.select(e,this.props.message.id)} checked={this.props.message.selected}/>
             </div>
             <div className="col-xs-2">
-              <i className={this.props.message.starred? "star fa fa-star" : "star fa fa-star-o"} onClick={this.props.starred} id={this.props.message.id}></i>
+              <i className={this.props.message.starred? "star fa fa-star" : "star fa fa-star-o"} onClick={()=>this.props.starred(this.props.message.id)} ></i>
             </div>
           </div>
         </div>
@@ -27,7 +27,7 @@ class Message extends Component {
           {this.props.message.labels.includes('dev')? <span className="label label-warning">dev</span> : ""}
           {this.props.message.labels.includes('gschool')? <span className="label label-warning">gschool</span> : ""}
           {this.props.message.labels.includes('personal')? <span className="label label-warning">personal</span> : ""}
-          <small onClick={this.expand} id={this.props.message.id}>
+          <small onClick={(e)=>this.expand(e, this.props.message.id)} >
             {this.props.message.subject}
           </small>
         </div>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
 class Toolbar extends Component {
 
@@ -14,9 +15,9 @@ class Toolbar extends Component {
     return (
       <div className="row toolbar">
         <div className="col-md-12">
-          <a class="btn btn-danger">
-            <i class="fa fa-plus"></i>
-          </a>
+          <Link className="btn btn-danger" to={this.props.isComposing? "/messages" : "/composer" } onClick={this.props.toggleComposer}>
+            <i className={this.props.isComposing? "fa fa-minus" : "fa fa-plus"} ></i>
+          </Link>
 
           <p className="pull-right">
             <span className="badge badge">{this.props.messages? this.props.messages.filter((message)=> !message.read).length : ''}</span>
@@ -50,7 +51,7 @@ class Toolbar extends Component {
             <option value="gschool">gschool</option>
           </select>
 
-          <button className="btn btn-default" disabled={this.anyChecked()? "":"disabled"}>
+          <button className="btn btn-default" disabled={this.anyChecked()? "":"disabled"} onClick={this.props.handleDelete}>
             <i className="fa fa-trash-o"></i>
           </button>
         </div>
