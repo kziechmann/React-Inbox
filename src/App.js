@@ -12,7 +12,7 @@ class App extends Component {
   state = {}
 
   componentDidMount = async() => {
-    const response = await fetch('http://localhost:8082/api/messages')
+    const response = await fetch('https://zeekmanapi.herokuapp.com/api/messages')
     const messages = await response.json()
     let newState = {messages:[...messages]}
     newState.messages.forEach(message => message.selected = false)
