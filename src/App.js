@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   updateMessage = async(data) => {
-    await fetch('http://localhost:8082/api/messages',{
+    await fetch('https://zeekmanapi.herokuapp.com/api/messages',{
       method: 'PATCH',
       body: JSON.stringify(data),
       headers:{
@@ -29,7 +29,7 @@ class App extends Component {
         'Accept': 'application/json',
       }
     })
-    let response = await fetch('http://localhost:8082/api/messages')
+    let response = await fetch('https://zeekmanapi.herokuapp.com/api/messages')
     const messages = await response.json()
     let newState = {messages:[...messages]}
     newState.messages = newState.messages.map(message => {const m = {...message}; m.selected = false; return m})
@@ -40,7 +40,7 @@ class App extends Component {
   handleSubmit = async(e) => {
     e.preventDefault()
     if(!e.target.subject.value || !e.target.body.value){ return }
-    await fetch('http://localhost:8082/api/messages',{
+    await fetch('https://zeekmanapi.herokuapp.com/api/messages',{
       method: 'POST',
       body: JSON.stringify({
         subject: e.target.subject.value,
@@ -55,7 +55,7 @@ class App extends Component {
         'Accept': 'application/json',
       }
     })
-    let response = await fetch('http://localhost:8082/api/messages')
+    let response = await fetch('https://zeekmanapi.herokuapp.com/api/messages')
     const messages = await response.json()
     let newState = {messages:[...messages]}
     newState.isComposing = false
@@ -65,7 +65,7 @@ class App extends Component {
   handleDelete = async() => {
     const selected = this.state.messages.filter(message=> message.selected)
     const messageIds = selected.map(message=>message.id)
-    const response = await fetch('http://localhost:8082/api/messages',
+    const response = await fetch('https://zeekmanapi.herokuapp.com/api/messages',
         {
           method: 'PATCH',
           body: JSON.stringify({
